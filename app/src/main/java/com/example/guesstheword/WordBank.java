@@ -25,7 +25,7 @@ public class WordBank {
             wordMap.put("ANKLE", "noun: the joint between the foot and the leg");
             wordMap.put("ARMATURE", "noun: a piece of soft iron or steel that connects the poles of a magnet or of adjacent magnets");
             wordMap.put("ACRONYM", "noun: a word (such as NATO, RADAR, or LASER) formed from the initial letter or letters of each of the successive parts or major parts of a compound term");
-            wordMap.put("ASTONISHING", "noun: causing a feeling of great surprise or wonder");
+            wordMap.put("ASTONISHING", "adjective: causing a feeling of great surprise or wonder");
             wordMap.put("APPLE", "noun: the fleshy, usually rounded red, yellow, or green edible pome fruit of a usually cultivated tree of the rose family");
             wordMap.put("AUTHENTIC", "adjective: not false or imitation");
         }

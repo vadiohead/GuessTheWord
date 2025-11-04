@@ -1,7 +1,9 @@
 package com.example.guesstheword;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,10 +22,12 @@ public class GameActivity extends AppCompatActivity {
     private List<String> definitions; // matching definitions
     private int currentIndex = 0; // which word we're on
 
+    private TextView txtTimer;
     private TextView definitionView;
     private EditText inputView;
     private TextView chosenLetterView;
     private TextView count;
+    private Button checkButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,8 @@ public class GameActivity extends AppCompatActivity {
         count = findViewById(R.id.count);
         count.setText(currentIndex+"/10");
 
+        checkButton = findViewById(R.id.checkButton);
+
         // load and shuffle words
         HashMap<String, String> wordMap = WordBank.getWords(letter);
         List<Map.Entry<String, String>> entries = new ArrayList<>(wordMap.entrySet());
@@ -55,6 +61,26 @@ public class GameActivity extends AppCompatActivity {
         }
 
         showCurrentDefinition();
+
+        boolean infiniteTime = getIntent().getBooleanExtra(
+                "infiniteTime", false);
+        txtTimer = findViewById(R.id.txtTimer);
+        if (infiniteTime) {
+            txtTimer.setText("time remaining: infinite");
+        } else {
+            new CountDownTimer(60 * 1000, 1) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    txtTimer.setText("time remaining: "+millisUntilFinished/1000);
+                }
+
+                @Override
+                public void onFinish() {
+                    txtTimer.setText("time's up mf!");
+                    checkButton.setEnabled(false);
+                }
+            }.start();
+        }
     }
 
     private void showCurrentDefinition() {

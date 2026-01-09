@@ -48,6 +48,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--
     <Button
         android:id="@+id/checkButton"
         android:layout_width="wrap_content"
@@ -58,6 +59,7 @@
         app:layout_constraintTop_toBottomOf="@id/textInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+    -->
 
     <EditText
         android:id="@+id/textInput"
@@ -66,6 +68,7 @@
         android:layout_marginTop="80dp"
         android:ems="10"
         android:inputType="textPassword"
+        android:password="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/definition" />

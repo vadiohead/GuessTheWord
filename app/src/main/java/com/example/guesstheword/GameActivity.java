@@ -2,6 +2,8 @@ package com.example.guesstheword;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,14 +22,14 @@ public class GameActivity extends AppCompatActivity {
 
     private List<String> words; // actual words (answers)
     private List<String> definitions; // matching definitions
-    private int currentIndex = 0; // which word we're on
+    private int currentIndex = 0; // which word we are on
 
     private TextView txtTimer;
     private TextView definitionView;
     private EditText inputView;
     private TextView chosenLetterView;
     private TextView count;
-    private Button checkButton;
+    //private Button checkButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +44,28 @@ public class GameActivity extends AppCompatActivity {
         definitionView = findViewById(R.id.definition);
         inputView = findViewById(R.id.textInput);
 
+        inputView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // required but unused
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkAnswer(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // required but unused
+            }
+        });
+
+
         count = findViewById(R.id.count);
         count.setText(currentIndex+"/10");
 
-        checkButton = findViewById(R.id.checkButton);
+        //checkButton = findViewById(R.id.checkButton);
 
         // load and shuffle words
         HashMap<String, String> wordMap = WordBank.getWords(letter);
@@ -65,9 +85,10 @@ public class GameActivity extends AppCompatActivity {
         boolean infiniteTime = getIntent().getBooleanExtra(
                 "infiniteTime", false);
         txtTimer = findViewById(R.id.txtTimer);
-        if (infiniteTime) {
+        if (infiniteTime == false) {
             txtTimer.setText("time remaining: infinite");
-        } else {
+        }
+        else {
             new CountDownTimer(60 * 1000, 1) {
                 @Override
                 public void onTick(long millisUntilFinished) {
@@ -77,9 +98,11 @@ public class GameActivity extends AppCompatActivity {
                 @Override
                 public void onFinish() {
                     txtTimer.setText("time's up mf!");
-                    checkButton.setEnabled(false);
+                    inputView.setEnabled(false);
+                    //checkButton.setEnabled(false);
                 }
             }.start();
+
         }
     }
 
@@ -93,8 +116,8 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public void check(View v) {
-        if (currentIndex >= words.size()) return; // already done
+    /*public void check(View v) {
+        if (currentIndex >= words.size()) return;
 
         String guess = inputView.getText().toString().trim().toUpperCase();
         String correct = words.get(currentIndex).toUpperCase();
@@ -107,6 +130,24 @@ public class GameActivity extends AppCompatActivity {
         }
         else {
             Toast.makeText(this, "incorrect.", Toast.LENGTH_SHORT).show();
+        }
+    }*/
+
+    private void checkAnswer(String guessRaw) {
+        if (currentIndex >= words.size()) {
+            return;
+        }
+
+        String guess = guessRaw.trim().toUpperCase();
+        String correct = words.get(currentIndex).toUpperCase();
+
+        if (guess.equals(correct)) {
+            Toast.makeText(this, "correct!", Toast.LENGTH_SHORT).show();
+
+            currentIndex++;
+            count.setText(currentIndex + "/10");
+
+            showCurrentDefinition();
         }
     }
 
